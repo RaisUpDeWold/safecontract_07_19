@@ -1,0 +1,32 @@
+.work {
+    background: red;
+}
+
+.tab-container {
+    color: white;
+}
+
+.tab-container li a{
+    color: white;
+    background: black;
+}
+
+.tab-container li a[aria-selected=true]{
+    color: black;
+    background: white;
+}
+
+.snackbar {
+    color: black;
+}
+
+.snackbar input, .snackbar div {
+    color: white;
+}
+.snackbar input, .snackbar div {
+    color: white;
+}
+
+html body {
+    background-color: #FFFFFF;
+}

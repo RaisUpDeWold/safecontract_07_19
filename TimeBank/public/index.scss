@@ -1,0 +1,44 @@
+body {
+  background-color: #1d2f47;
+}
+
+#belowNav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: left;
+
+}
+
+#insideQualify {
+  width: 20%;
+}
+
+#insideMenu {
+  width: 65%;
+}
+
+button {
+  span {
+    text-transform: none !important;
+  }
+}
+
+div[role="menu"]{
+  background-color: #4D74C1;
+}
+
+ .FAQ {
+  color: #FFFFFF;
+  font-family: 'Roboto', sans-serif;
+}
+
+ p {
+   font-family: "Arial Narrow", sans-serif;
+  color: #aac3cd;
+  font-size: medium;
+}
+
+ .qualifyButton {
+   width:75%;
+ }
