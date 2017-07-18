@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>SafeContract</title>
+
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/font-awesome.min.css" rel="stylesheet">
+        <link href="css/style.css" rel="stylesheet">
+
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/jquery.easing.1.3.js"></script>
+        <script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
+    </head>
+    <body data-spy="scroll">
+        <div id="howItWorksTab" name="howItWorksTab">
+            <div class="row">
+                <div class="panel with-nav-tabs panel-info">
+                    <div class="panel-heading">
+                        <ul class="nav nav-tabs">
+                            <li><a id="tab1InfoLink" href="#tab1info" data-toggle="tab">Get info of current deposit</a></li>
+                            <li class="active"><a id="tab2InfoLink" href="#tab2info" data-toggle="tab">Deposit ETH or a fixed time</a></li>
+                            <li><a href="#tab3info" data-toggle="tab" id="tab3InfoLink">Withdraw ETH</a></li>
+                        </ul>
+                    </div>
+                    <div class="panel-body">
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active" id="tab1info">
+                                <div class="col-md-12 text-center">
+                                    <button>Get Info</button>&nbsp;&nbsp;
+                                    <input type="text" size="30" value="ETH stored and future time" disabled/>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="tab2info">
+                                <div class="col-md-3 text-right">
+                                    <button>Store ETH</button>
+                                </div>
+                                <div class="col-md-5 text-center">
+                                    <font style="font-size: 12px;">Days to access withdrawal</font><br>
+                                    <input type="text" placeholder="Use this input or slider" />
+                                </div>
+                                <div class="col-md-4 text-center">
+                                    <font style="font-size: 12px;">Doesn't include gas cost</font><br>
+                                    <input type="text" placeholder="Amount of ETH to store" />
+                                </div>
+                                <div class='col-md-12' style="padding-top: 20px;">
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:50%">
+                                            50% Complete (info)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="tab3info">
+                                <div class="col-md-12 text-center">
+                                    <button>Withdraw Funds</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="topLayer" name="topLayer" style="margin: 0px; width: 100%;">
+            <canvas id="topSpace" style="width: 100%; height: 100vh;"></canvas>
+            <div class="mainSplashScreen">
+                <nav name="contractNavBar" id="contractNavBar" class="nav navbar-static-top">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <a class="navbar-brand" href="#">
+                                <img width="160" src="images/nav-logo.png" />
+                            </a>
+                        </div>
+                        <div class="navbar-header page-scroll">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#topNavBar" style="background-color: rgb(255, 0, 255);">
+                                <span class="sr-only">Toggle Navigation</span>
+                                <span class="icon-bar" style="background-color: rgb(0, 0, 0);"></span>
+                                <span class="icon-bar" style="background-color: rgb(0, 0, 0);"></span>
+                                <span class="icon-bar" style="background-color: rgb(0, 0, 0);"></span>
+                            </button>
+                        </div>
+                        <div class="navbar-collapse collapse" id="topNavBar">
+                            <ul class="nav navbar-nav" style="padding-left: 80px;">
+                                <li><a class="page-scroll" href="#howItWorksSection">How it works</a></li>
+                                <li><a class="page-scroll" href="#featuresSection">Features</a></li>
+                                <li><a class="page-scroll" href="#teamSection">Team</a></li>
+                                <li><a class="page-scroll" href="#whitePaperSection">White paper</a></li>
+                                <li><a class="page-scroll" href="https://github.com/Safecontract">GitHub</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+
+                <section name="splashSection" id="splashSection">
+                    <div class="container mainIconStyle">
+                        <div class="page-header align-center">
+                            <h1>Trustless Crypto-Asset Holder</h1>
+                        </div>
+                        <div class="row align-center">
+                            <ul class="list-inline">
+                                <li><a href="#"><img src="images/slack-icon.png" class="img-responsive" /></a></li>
+                                <li><a href="https://gitter.im/ethereum/go-ethereum"><img src="images/gitter-icon.png" class="img-responsive" /></a></li>
+                                <li><a href="https://twitter.com/safecontract"><img src="images/twitter-icon.png" class="img-responsive" /></a></li>
+                                <li><a href="https://t.me/safecontract"><img src="images/telegram-icon.png" class="img-responsive" /></a></li>
+                            </ul>
+                        </div>
+                        <div class="row align-center">
+                            <button class="watchVideo">WATCH VIDEO</button>
+                            <a class="createAContract" href="https://warm-tundra-80296.herokuapp.com/">CREATE A SAFECONTRACT</a>
+                        </div>
+                    </div>
+                    <div class="bitCoinStyle container">
+                        <div class="row" id="bitCoinLayer" style="padding-left: 30px; padding-right: 30px;">
+                            <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1">
+                                <div class="row bitCoin-Circle" id="rankCircle1">&bull;</div>
+                                <h4 id="rankName1"></h4>
+                                <h5 id="rankPrice1"></h5>
+                                <h5 id="rankPercent1"></h5>
+                            </div>
+                            <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1">
+                                <div class="row bitCoin-Circle" id="rankCircle2">&bull;</div>
+                                <h4 id="rankName2"></h4>
+                                <h5 id="rankPrice2"></h5>
+                                <h5 id="rankPercent2"></h5>
+                            </div>
+                            <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1">
+                                <div class="row bitCoin-Circle" id="rankCircle3">&bull;</div>
+                                <h4 id="rankName3"></h4>
+                                <h5 id="rankPrice3"></h5>
+                                <h5 id="rankPercent3"></h5>
+                            </div>
+                            <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1">
+                                <div class="row bitCoin-Circle" id="rankCircle4">&bull;</div>
+                                <h4 id="rankName4"></h4>
+                                <h5 id="rankPrice4"></h5>
+                                <h5 id="rankPercent4"></h5>
+                            </div>
+                            <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1">
+                                <div class="row bitCoin-Circle" id="rankCircle5">&bull;</div>
+                                <h4 id="rankName5"></h4>
+                                <h5 id="rankPrice5"></h5>
+                                <h5 id="rankPercent5"></h5>
+                            </div>
+                            <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1">
+                                <div class="row bitCoin-Circle" id="rankCircle6">&bull;</div>
+                                <h4 id="rankName6"></h4>
+                                <h5 id="rankPrice6"></h5>
+                                <h5 id="rankPercent6"></h5>
+                            </div>
+                            <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1">
+                                <div class="row bitCoin-Circle" id="rankCircle7">&bull;</div>
+                                <h4 id="rankName7"></h4>
+                                <h5 id="rankPrice7"></h5>
+                                <h5 id="rankPercent7"></h5>
+                            </div>
+                            <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1">
+                                <div class="row bitCoin-Circle" id="rankCircle8">&bull;</div>
+                                <h4 id="rankName8"></h4>
+                                <h5 id="rankPrice8"></h5>
+                                <h5 id="rankPercent8"></h5>
+                            </div>
+                            <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1">
+                                <div class="row bitCoin-Circle" id="rankCircle9">&bull;</div>
+                                <h4 id="rankName9"></h4>
+                                <h5 id="rankPrice9"></h5>
+                                <h5 id="rankPercent9"></h5>
+                            </div>
+                            <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1">
+                                <div class="row bitCoin-Circle" id="rankCircle10">&bull;</div>
+                                <h4 id="rankName10"></h4>
+                                <h5 id="rankPrice10"></h5>
+                                <h5 id="rankPercent10"></h5>
+                            </div>
+                            <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1">
+                                <div class="row bitCoin-Circle" id="rankCircle11">&bull;</div>
+                                <h4 id="rankName11"></h4>
+                                <h5 id="rankPrice11"></h5>
+                                <h5 id="rankPercent11"></h5>
+                            </div>
+                            <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1">
+                                <div class="row bitCoin-Circle" id="rankCircle12">&bull;</div>
+                                <h4 id="rankName12"></h4>
+                                <h5 id="rankPrice12"></h5>
+                                <h5 id="rankPercent12"></h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container splashBottom">
+                        <div class="bottom-grids">
+                            <div class="splashEachItem col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                <div class="splashOverLayerItem col-xs-4 col-sm-3 col-md-3 col-lg-3">
+                                    <div style="float: right;">
+                                        <img src="images/chat-icon.png" class="img-responsive" />
+                                    </div>
+                                </div>
+                                <div class="text-left splashOverLayerText col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                    <h5>Browse decentralized Apps</h5>
+                                    <p>
+                                        Explore the next generation<br>
+                                        of apps, with the next<br>
+                                        generation of Browser
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="splashEachItem col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                <div class="splashOverLayerItem col-xs-4 col-sm-3 col-md-3 col-lg-3">
+                                    <div style="float: right;">
+                                        <img src="images/currency-icon.png" class="img-responsive" />
+                                    </div>
+                                </div>
+                                <div class="text-left splashOverLayerText col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                    <h5>Send, receive, store Ether</h5>
+                                    <p>
+                                        Safely store your ETH and<br>
+                                        other Ethereum crypto-assets.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="splashEachItem col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                <div class="splashOverLayerItem col-xs-4 col-sm-3 col-md-3 col-lg-3">
+                                    <div style="float: right;">
+                                        <img src="images/business-icon.png" class="img-responsive" />
+                                    </div>
+                                </div>
+                                <div class="text-left splashOverLayerText col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                    <h5>Buy and sell Ether locally</h5>
+                                    <p>
+                                        Explore the next<br>
+                                        generDiscover nearby Status<br>
+                                        users to exchange goods and
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <section name="howItWorksSection" id="howItWorksSection">
+            <div class="container">
+                <h1 align="center">How it works</h1>
+                <div class="row firstWorkItems" id="firstPara">
+                    <div class="workItemsText col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <h3>Ut vehicula ligula tellus, eu varius orci tincid</h3>
+                        <h4>
+                            Am auctor quis orci vel pretium. Fusce enim ipsum,<br>
+                            sollicitudin et iaculis pretium, sagittis non ipsum. Fusce<br>
+                            iaculis vestibulum tincidunt. Donec lobortis eros erat, sit<br>
+                            amet mattis arcu bibendum bibendum.
+                        </h4>
+                    </div>
+                    <div class="workItemsText col-xs-12 col-sm-6 col-md-6 col-lg-6 worksItemTextRightImage">
+                        <img src="images/tab1.png" class="img-responsive center-block" />
+                    </div>
+                </div>
+                <div class="row workItems" id="secondPara">
+                    <div class="workItemsText col-sm-6">
+                        <h3>Ut vehicula ligula tellus, eu varius orci tincid</h3>
+                        <h4>
+                            Am auctor quis orci vel pretium. Fusce enim ipsum,<br>
+                            sollicitudin et iaculis pretium, sagittis non ipsum. Fusce<br>
+                            iaculis vestibulum tincidunt. Donec lobortis eros erat, sit<br>
+                            amet mattis arcu bibendum bibendum.
+                        </h4>
+                    </div>
+                    <div class="workItemsText col-xs-12 col-sm-6 col-md-6 col-lg-6 worksItemTextRightImage">
+                        <img src="images/tab2.png" class="img-responsive center-block" />
+                    </div>
+                </div>
+                <div class="row workItems" id="thirdPara">
+                    <div class="workItemsText col-sm-6">
+                        <h3>Ut vehicula ligula tellus, eu varius orci tincid</h3>
+                        <h4>
+                            Am auctor quis orci vel pretium. Fusce enim ipsum,<br>
+                            sollicitudin et iaculis pretium, sagittis non ipsum. Fusce<br>
+                            iaculis vestibulum tincidunt. Donec lobortis eros erat, sit<br>
+                            amet mattis arcu bibendum bibendum.
+                        </h4>
+                    </div>
+                    <div class="workItemsText col-xs-12 col-sm-6 col-md-6 col-lg-6 worksItemTextRightImage">
+                        <img src="images/tab3.png" class="img-responsive center-block" />
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section name="featuresSection" id="featuresSection">
+            <div class="container">
+                <div class="row">
+                    <h1 align="center">Features</h1>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 leftFeatures">
+                        <div class="featureLayer col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+                            <div class="featureLogoLayer">
+                                <img src="images/savings-feature.png" class="center-block" />
+                            </div>
+                            <h4>Savings</h4>
+                            <p>
+                                Discipline yourself to consolidate money higher purchases while scalable growing it through the course of the expiry date.
+                            </p>
+                        </div>
+                        <div class="featureLayer col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+                            <div class="featureLogoLayer">
+                                <img src="images/insurance-feature.png" class="center-block" />
+                            </div>
+                            <h4>Insurance</h4>
+                            <p>
+                                Decentralizing the initiation of policies on the go and be paid claims automatically.
+                            </p>
+                        </div>
+                        <div class="featureLayer col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+                            <div class="featureLogoLayer">
+                                <img src="images/premium-feature.png" class="center-block" />
+                            </div>
+                            <h4>Premium Paid Services</h4>
+                            <p>
+                                Don't have to worry about laying a card. Our safe will give you additional perks by taking care of premium-novelty paid services.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 rightFeatures">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding: 0px;">
+                            <div class="innerCircle1 text-center"></div>
+                            <div class="outerCircle1 text-center"></div>
+                            <div class="innerCircle2 text-center"></div>
+                            <div class="outerCircle2 text-center"></div>
+                            <div class="featureLayer col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+                                <div class="featureLogoLayer">
+                                    <img src="images/automate-feature.png" class="center-block" />
+                                </div>
+                                <h4>Automate Your Money</h4>
+                                <p>
+                                    Build a bullet personal-finance system to help you automatically take a percentage of every dollar you earn and funnel it towards the right goals - including investing, saving, and guilt-free spending.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding: 0px;">
+                            <div class="innerCircle1 text-center"></div>
+                            <div class="outerCircle1 text-center"></div>
+                            <div class="innerCircle2 text-center"></div>
+                            <div class="outerCircle2 text-center"></div>
+                            <div class="featureLayer col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+                                <div class="featureLogoLayer">
+                                    <img src="images/invest-feature.png" class="center-block" />
+                                </div>
+                                <h4>Invest so your money grows for you</h4>
+                                <p>
+                                    Counterintuitively, putting money in a savings account is not enough. With interest rates so low, you're actually losing money thanks to inflation. The real gains come from investing your money so it grows for you.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="innerCircle1 text-center"></div>
+                            <div class="outerCircle1 text-center"></div>
+                            <div class="featuresAddMoreLayer col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+                                Add More...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section name="whitePaperSection" id="whitePaperSection">
+            <div class="container">
+                <div class="page-header text-center">
+                    <h1>White Paper</h1>
+                </div>
+                <div class="row text-center">
+                    <div class="col-md-12 text-center">
+                        <a href="#">
+                            <span style="padding-right: 20px;"><img src="images/icon-bar.png" /></span>
+                            &nbsp;WHITE PAPER
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section name="teamSection" id="teamSection">
+            <div class="container">
+                <div class="page-header text-center">
+                    <h1>Team</h1>
+                    <p>
+                        Safecontract is comprised of very brainy and heavy domain experts who have worked in Crypto, Al and Machine Learning for
+                        an aggregation of decades. These people are alums from the universities like MIT, St.Andrews, Oxford and NYU all focused on
+                        the interwination of software automation. If there is a team to do anything in this space, it is these guys.
+                    </p>
+                </div>
+
+                <div class="row teamMembers">
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 text-center">
+                        <span>
+                            <img src="images/member1.png" class="img-responsive center-block" />
+                        </span>
+                        <h3>David</h3>
+                        <h5>Co-founder&nbsp;
+                            <span class="fa-stack fa-md linkedin-soc">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x"></i>
+                            </span>
+                        </h5>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 text-center">
+                        <span>
+                            <img src="images/member2.png" class="img-responsive center-block" />
+                        </span>
+                        <h3>Chris</h3>
+                        <h5>Co-founder&nbsp;
+                            <span class="fa-stack fa-md linkedin-soc">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x"></i>
+                            </span>
+                        </h5>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 text-center">
+                        <span>
+                            <img src="images/member3.png" class="img-responsive center-block" />
+                        </span>
+                        <h3>Helen</h3>
+                        <h5>Co-founder&nbsp;
+                            <span class="fa-stack fa-md linkedin-soc">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x"></i>
+                            </span>
+                        </h5>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 text-center">
+                        <span>
+                            <img src="images/member4.png" class="img-responsive center-block" />
+                        </span>
+                        <h3>Martin</h3>
+                        <h5>Co-founder&nbsp;
+                            <span class="fa-stack fa-md linkedin-soc">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x"></i>
+                            </span>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section name="getStartedSection" id="getStartedSection">
+            <div class="container">
+                <div class="page-header text-center">
+                    <h1>Get started with Safecontract</h1>
+                </div>
+                <div class="row text-center">
+                    <div class="col-md-12 text-center">
+                        <button>GET STARTED</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer name="contractFooter" id="contractFooter">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3 text-center footerLogo">
+                        <img src="images/logo.png">
+                    </div>
+                    <div class="col-md-6 text-center">
+                        <ul class="list-inline">
+                            <li><a class="page-scroll" href="#howItWorksSection">How it works</a></li>
+                            <li><a class="page-scroll" href="#featuresSection">Features</a></li>
+                            <li><a class="page-scroll" href="#teamSection">Team</a></li>
+                            <li><a class="page-scroll" href="#whitePaperSection">White paper</a></li>
+                            <li><a class="page-scroll" href="https://github.com/Safecontract">GitHub</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        © All rights reserved
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <script src="js/index.js"></script>
+    </body>
+</html>
